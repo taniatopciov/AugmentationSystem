@@ -1,3 +1,41 @@
 algorithms:
-  - name: "rotation"
-  - name: "dummy"
+  - name: "Brightness"
+    parameters:
+      - name: bias
+        value: 40
+  - name: "Contrast"
+    parameters:
+      - name: gain
+        value: 0.8
+  - name: "Gamma Correction"
+    parameters:
+      - name: gamma
+        value: 0.7
+  - name: "Gaussian Blur"
+    parameters:
+      - name: sigma
+        value: 16
+      - name: size
+        value: 6
+  - name: "Translation"
+    parameters:
+      - name: x
+        value: 35
+      - name: y
+        value: 50
+  - name: "Shearing"
+    parameters:
+      - name: x
+        value: 0.2
+      - name: y
+        value: 0.5
+  - name: "Scaling"
+    parameters:
+      - name: x
+        value: 0.7
+      - name: y
+        value: 0.3
+  - name: "Rotation"
+    parameters:
+      - name: angle
+        value: 45
