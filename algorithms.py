@@ -51,8 +51,24 @@ def gaussian_blur(received_image, size, sigma):
     return image
 
 
-# implement pixel level translation
 def translation(received_image, tx, ty):
+    image = np.array(received_image, dtype=np.float64)
+    image_height, image_width, image_color = image.shape
+    output_image = np.zeros((image_height, image_width, image_color), dtype=np.float64)
+    for h in range(image_height):
+        for w in range(image_width):
+            x = w + tx
+            y = h + ty
+            if tx <= x < image_width and ty <= y < image_height:
+                output_image[y, x] = image[h, w]
+    for h in range(ty):
+        for w in range(image_width):
+            output_image[h, w] = 0.0
+    output_image = np.array(output_image, dtype=np.uint8)
+    return output_image
+
+
+def translation2(received_image, tx, ty):
     image = np.array(received_image, dtype=np.float64)
     translation_matrix = np.float64([[1, 0, tx], [0, 1, ty]])
     image = cv2.warpAffine(image, translation_matrix, (image.shape[1], image.shape[0]))
