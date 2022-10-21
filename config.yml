@@ -39,3 +39,23 @@ algorithms:
     parameters:
       - name: angle
         value: 45
+  - name: "Chain Processing"
+    parameters:
+      - name: algorithms
+        value:
+          - name: "Gaussian Blur"
+            parameters:
+              - name: sigma
+                value: 16
+              - name: size
+                value: 6
+          - name: "Translation"
+            parameters:
+              - name: x
+                value: 70
+              - name: y
+                value: 40
+          - name: "Rotation"
+            parameters:
+              - name: angle
+                value: 45

@@ -26,6 +26,17 @@ def create_output_directory(output_directory_path):
         os.mkdir(output_directory_path)
 
 
+def compute_image_name(image_name, algorithm_name, count, image_extension):
+    return image_name + '_' + algorithm_name + '_' + str(count) + image_extension
+
+
+def get_algorithm_parameters(algorithm):
+    parameters = []
+    for parameter in algorithm['parameters']:
+        parameters.append(parameter)
+    return parameters
+
+
 def apply_algorithm_to_image(image, algorithm, parameters):
     if algorithm == 'Brightness':
         return brightness(image, parameters[0]['value'])
@@ -62,25 +73,42 @@ def main():
         image_path = images_directory + '/' + i_name
         image_name, image_extension = os.path.splitext(i_name)
 
-        for algorithm in algorithms:
-            augmented_image_name = image_name + '_' + algorithm['name'] + '_' + str(count) + image_extension
+        if image_extension == '.jpg':
 
             image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
 
-            parameters = []
-            for parameter in algorithm['parameters']:
-                parameters.append(parameter)
+            if image is not None:
 
-            # augmented_image = apply_algorithm_to_image(image, algorithm['name'], algorithm['parameters'][0]['value'])
-            augmented_image = apply_algorithm_to_image(image, algorithm['name'], parameters)
+                for algorithm in algorithms:
 
-            image_final_path = output_directory_name + '/' + augmented_image_name
+                    if algorithm['name'] == 'Chain Processing':
 
-            if augmented_image is not None:
-                if image_final_path is not None:
-                    cv2.imwrite(image_final_path, augmented_image)
+                        chain_algorithms = algorithm['parameters'][0]['value']
+                        augmented_image_name = image_name
+                        augmented_image = image
 
-        count = count + 1
+                        for chain_algorithm in chain_algorithms:
+                            algorithm_name = chain_algorithm['name']
+                            augmented_image_name = augmented_image_name + '_' + algorithm_name
+                            algorithm_parameters = get_algorithm_parameters(chain_algorithm)
+                            augmented_image = apply_algorithm_to_image(augmented_image, algorithm_name,
+                                                                       algorithm_parameters)
+
+                        augmented_image_name = augmented_image_name + image_extension
+
+                    else:
+                        augmented_image_name = compute_image_name(image_name, algorithm['name'], count, image_extension)
+
+                        augmented_image = apply_algorithm_to_image(image, algorithm['name'],
+                                                                   get_algorithm_parameters(algorithm))
+
+                    image_final_path = output_directory_name + '/' + augmented_image_name
+
+                    if augmented_image is not None:
+                        if image_final_path is not None:
+                            cv2.imwrite(image_final_path, augmented_image)
+
+                    count = count + 1
 
 
 if __name__ == '__main__':
