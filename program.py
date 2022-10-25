@@ -7,18 +7,25 @@ import yaml
 from algorithms import *
 
 
-def parse_config_file(config_file_path='config.yml'):
+def select_directory():
+    root = Tk()
+    root.withdraw()
+    directory_path = filedialog.askdirectory(initialdir="/Facultate/Master/Anul I/FCV/First Project", title="Select images directory")
+    return directory_path
+
+
+def select_config_file():
+    root = Tk()
+    root.withdraw()
+    file_path = filedialog.askopenfilename(initialdir="/Facultate/Master/Anul I/FCV/First Project", title="Select configuration file")
+    return file_path
+
+
+def parse_config_file(config_file_path):
     with open(config_file_path, "r") as config_file:
         config_file_content = config_file.read()
     configuration = yaml.load(config_file_content, Loader=yaml.FullLoader)
     return configuration
-
-
-def select_directory():
-    root = Tk()
-    root.withdraw()
-    directory_path = filedialog.askdirectory()
-    return directory_path
 
 
 def create_output_directory(output_directory_path):
@@ -60,7 +67,8 @@ def apply_algorithm_to_image(image, algorithm, parameters):
 
 
 def main():
-    configurations = parse_config_file()
+    config_file_path = select_config_file()
+    configurations = parse_config_file(config_file_path)
     images_directory = select_directory()
     output_directory_name = images_directory + '_aug'
     create_output_directory(output_directory_name)
