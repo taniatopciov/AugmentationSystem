@@ -10,14 +10,16 @@ from algorithms import *
 def select_directory():
     root = Tk()
     root.withdraw()
-    directory_path = filedialog.askdirectory(initialdir="/Facultate/Master/Anul I/FCV/First Project", title="Select images directory")
+    directory_path = filedialog.askdirectory(initialdir="/Facultate/Master/Anul I/FCV/First Project",
+                                             title="Select images directory")
     return directory_path
 
 
 def select_config_file():
     root = Tk()
     root.withdraw()
-    file_path = filedialog.askopenfilename(initialdir="/Facultate/Master/Anul I/FCV/First Project", title="Select configuration file")
+    file_path = filedialog.askopenfilename(initialdir="/Facultate/Master/Anul I/FCV/First Project",
+                                           title="Select configuration file")
     return file_path
 
 
@@ -102,10 +104,12 @@ def main():
                             augmented_image = apply_algorithm_to_image(augmented_image, algorithm_name,
                                                                        algorithm_parameters)
 
-                        augmented_image_name = augmented_image_name + image_extension
+                        augmented_image_name = augmented_image_name + '_' + str(count) + image_extension
+                        count += 1
 
                     else:
                         augmented_image_name = compute_image_name(image_name, algorithm['name'], count, image_extension)
+                        count = count + 1
 
                         augmented_image = apply_algorithm_to_image(image, algorithm['name'],
                                                                    get_algorithm_parameters(algorithm))
@@ -115,8 +119,6 @@ def main():
                     if augmented_image is not None:
                         if image_final_path is not None:
                             cv2.imwrite(image_final_path, augmented_image)
-
-                    count = count + 1
 
 
 if __name__ == '__main__':
